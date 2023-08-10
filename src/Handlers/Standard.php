@@ -270,7 +270,7 @@ class Standard
             $params['order'] = $order;
         }
 
-        return $this->request->get('merchant/incoming_payments', $params);
+        return $this->request->get('merchant/withdrawals', $params);
     }
 
     /**
