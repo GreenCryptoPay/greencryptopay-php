@@ -101,7 +101,9 @@ class Request
         try {
             return $callback();
         } catch (RequestException $e) {
-            throw new GcpSdkRequestException($e->getMessage(), $e->getCode());
+            $error = json_decode($e->getResponse()->getBody()->getContents(), true);
+            $message = !empty($error['error']) ? $error['error'] : $e->getMessage();
+            throw new GcpSdkRequestException($message, $e->getCode());
         }
     }
 }
