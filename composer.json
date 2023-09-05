@@ -1,7 +1,6 @@
 {
     "name": "greencryptopay/greencryptopay-php",
     "description": "Greencryptopay library for PHP",
-    "version": "1.0.0",
     "license": "MIT",
     "authors": [
         {
