@@ -91,19 +91,22 @@ vendor/bin/phpunit --testsuite="tests"
     $transferApi = Api::make('transfer', true);
     
     // Sign up
-    if (empty($merchantId)) {
-          $response = $transferApi->merchant();
+    if (empty($merchantId) || empty($secretKey)) {
+          $response = $transferApi->merchant('percent', 'https://example.com/callback');
           $merchantId = $response['merchant_id'];
+          $secretKey = $response['secret_key'];
     }
     
     $transferApi->setMerchantId($merchantId);
+    $transferApi->setSecretKey($secretKey);
 ```
 
 > **Sign up:**
 
 | Name    | Parameters | Validation | Description |
 | :----  | :----  |  :----  |:---- |
-| merchant | — | — | — |
+| merchant | <ul><li>string $feeType</li><li>string $callbackUrl</li></ul>| <ul><li>Enum: [percent, fix]</li><li>Max: 200</li></ul> | <ul><li>Fee type</li><li>URL to send notifications about payments</li></ul>  |
+
 
 > **Operations:**
 

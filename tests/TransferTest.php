@@ -7,18 +7,21 @@ class TransferTest extends TestCase
 {
     private static $transfer;
     private static $faker;
+    private static $callbackUrl;
 
     public static function setUpBeforeClass (): void
     {
         self::$faker = Faker\Factory::create();
+        self::$callbackUrl = self::$faker->url;
     }
 
     public function testSignUp()
     {
         self::$transfer = new Transfer(new \GcpSdk\tests\Request(Transfer::API_URL, true));
-        $response = self::$transfer->merchant();
+        $response = self::$transfer->merchant('percent', self::$callbackUrl);
 
         self::$transfer->setMerchantId($response['merchant_id']);
+        self::$transfer->setSecretKey($response['secret_key']);
 
         $this->assertInstanceOf(Transfer::class, self::$transfer);
     }

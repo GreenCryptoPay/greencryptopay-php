@@ -26,18 +26,28 @@ class Transfer
     }
 
     /**
+     * @param string $feeType
+     * @param string $callbackUrl
      * @return mixed
      */
-    public function merchant()
+    public function merchant(string $feeType, string $callbackUrl)
     {
-        return $this->request->merchant(function () {
-            return $this->request->get('merchant');
+        return $this->request->merchant(function () use ($feeType, $callbackUrl) {
+            return $this->request->post('merchant', [
+                'fee_type' => $feeType,
+                'callback_url' => $callbackUrl
+            ]);
         });
     }
 
     public function setMerchantId($merchantId)
     {
         $this->merchantId = $merchantId;
+    }
+
+    public function setSecretKey($secretKey)
+    {
+        $this->request->setSecretKey($secretKey);
     }
 
     /**
@@ -84,6 +94,7 @@ class Transfer
         return $this->request->get('payment_address/state', [
             'currency' => $currency,
             'payment_address' => $paymentAddress,
+            'merchant_id' => $this->merchantId
         ]);
     }
 
@@ -112,7 +123,8 @@ class Transfer
     {
         $params = [
             'currency' => $currency,
-            'payment_address' => $paymentAddress
+            'payment_address' => $paymentAddress,
+            'merchant_id' => $this->merchantId
         ];
 
         if (!empty($txid)) {
@@ -167,7 +179,8 @@ class Transfer
     {
         $params = [
             'currency' => $currency,
-            'payment_address' => $paymentAddress
+            'payment_address' => $paymentAddress,
+            'merchant_id' => $this->merchantId
         ];
 
         if (!empty($txid)) {
